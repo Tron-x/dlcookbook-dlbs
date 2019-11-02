@@ -14,23 +14,27 @@
 
         "exp.rerun": "never",
 
-	"exp.model_title": "$('${exp.model}'.replace('/', ':').lower())$",
+        "exp.model_title": "$('${exp.model}'.replace('/', ':').lower())$",
 
         "runtime.launcher": "${exp.vnni_opts} ${exp.cpu_opts}"
     },
     "variables": {
         "exp.replica_batch": [1, 2, 4, 8],
-	"exp.model": ["mobilenetv2-int8-tf-0001/FP32", "resnet-50-int8-tf-0001/FP32", "inceptionv3-int8-tf-0001/FP32"],
-	"exp.cpu_config": [1, 2, 3]
+        "exp.model": ["mobilenetv2-int8-tf-0001/FP32", "resnet-50-int8-tf-0001/FP32", "inceptionv3-int8-tf-0001/FP32"],
+        "exp.cpu_config": [1, 2, 3]
     },
     "extensions": [
-	{"condition": {"exp.cpu_config": 1}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=80"}},
-	{"condition": {"exp.cpu_config": 2}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=40 numactl --localalloc --physcpubind=0-19,40-59"}},
-        {"condition": {"exp.cpu_config": 3}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=20 numactl --localalloc --physcpubind=0-19"}},
+        {"condition": {"exp.device_code": "gold.6248.250"},                      "parameters": {"exp.device_title": "Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz"}},
+        {"condition": {"exp.device_code": "gold.6248.250", "exp.cpu_config": 1}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=80"}},
+        {"condition": {"exp.device_code": "gold.6248.250", "exp.cpu_config": 2}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=40 numactl --localalloc --physcpubind=0-19,40-59"}},
+        {"condition": {"exp.device_code": "gold.6248.250", "exp.cpu_config": 3}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=20 numactl --localalloc --physcpubind=0-19"}},
+
+        {"condition": {"exp.device_code": "gold.6254.310"},                      "parameters": {"exp.device_title": "Intel(R) Xeon(R) Gold 6254 CPU @ 3.10GHz"}},
+        {"condition": {"exp.device_code": "gold.6254.310", "exp.cpu_config": 1}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=72"}},
+        {"condition": {"exp.device_code": "gold.6254.310", "exp.cpu_config": 2}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=36 numactl --localalloc --physcpubind=0-17,36-53"}},
+        {"condition": {"exp.device_code": "gold.6254.310", "exp.cpu_config": 3}, "parameters": {"exp.cpu_opts":  "OMP_NUM_THREADS=18 numactl --localalloc --physcpubind=0-17"}},
+
         {"condition": {"exp.vnni_status": "on"}, "parameters": {"exp.vnni_opts": "MKLDNN_NO_VNNI=0"}},
-        {"condition": {"exp.vnni_status": "off"}, "parameters": {"exp.vnni_opts": "MKLDNN_NO_VNNI=1"}},
-	{"condition": {"exp.device_code": "gold.6248.250"}, "parameters": {"exp.device_title": "Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz"}},
-	{"condition": {"exp.device_code": "gold.6254.310"}, "parameters": {"exp.device_title": "Intel(R) Xeon(R) Gold 6254 CPU @ 3.10GHz"}}
+        {"condition": {"exp.vnni_status": "off"}, "parameters": {"exp.vnni_opts": "MKLDNN_NO_VNNI=1"}}
     ]
 }
-
